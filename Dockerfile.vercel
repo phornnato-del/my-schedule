@@ -7,6 +7,7 @@ COPY src ./src
 
 RUN mvn clean package -DskipTests
 
+
 FROM eclipse-temurin:17-jre
 
 WORKDIR /app
@@ -15,4 +16,4 @@ COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 80
 
-CMD ["sh", "-c", "exec java -jar app.jar --server.port=${PORT:-80}"]
+CMD ["sh", "-c", "exec /opt/java/openjdk/bin/java -jar /app/app.jar --server.port=${PORT:-80}"]
