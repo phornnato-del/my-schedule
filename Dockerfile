@@ -16,4 +16,6 @@ COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "exec java -jar app.jar --server.port=${PORT:-8080}"]
+ENV PATH="/opt/java/openjdk/bin:${PATH}"
+
+CMD ["sh", "-c", "exec /opt/java/openjdk/bin/java -jar app.jar --server.port=${PORT:-8080}"]
