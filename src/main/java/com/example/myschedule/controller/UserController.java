@@ -4,6 +4,7 @@ import com.example.myschedule.dto.request.UserRequestDto;
 import com.example.myschedule.dto.response.BaseWebResponse;
 import com.example.myschedule.dto.response.user.UserResponseDto;
 import com.example.myschedule.service.IUserService;
+import com.example.myschedule.service.crypto.Encrypted;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/user/v1/")
 @RequiredArgsConstructor
+@Encrypted
 public class UserController {
 
     private final IUserService userService;
