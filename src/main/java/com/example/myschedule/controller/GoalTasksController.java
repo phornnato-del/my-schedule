@@ -7,6 +7,7 @@ import com.example.myschedule.dto.response.GoalTasksResDto;
 import com.example.myschedule.dto.response.GoalsResDto;
 import com.example.myschedule.service.GoalService;
 import com.example.myschedule.service.GoalTasksService;
+import com.example.myschedule.service.crypto.Encrypted;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/goal-tasks")
 @RequiredArgsConstructor
+@Encrypted
 public class GoalTasksController {
 
     private final GoalTasksService goalTasksService;
