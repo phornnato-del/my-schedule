@@ -1,24 +1,19 @@
 package com.example.myschedule.dao;
 
 import com.example.myschedule.dao.base.BaseDBDao;
-import com.example.myschedule.entity.GoalsEntity;
-import com.example.myschedule.repository.GoalsRepository;
+import com.example.myschedule.entity.ProjectsEntity;
+import com.example.myschedule.repository.ProjectsRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
-public class GoalsDao extends BaseDBDao<GoalsEntity, Long> {
+public class ProjectDao extends BaseDBDao<ProjectsEntity, Long> {
 
-    private final GoalsRepository goalsRepository;
+    private final ProjectsRepository repository;
 
-    public GoalsDao(GoalsRepository goalsRepository) {
-        super(goalsRepository);
-        this.goalsRepository = goalsRepository;
+    public ProjectDao(ProjectsRepository repository) {
+        super(repository);
+        this.repository = repository;
     }
 
-    public void deleteById(Long id) {
-        goalsRepository.deleteById(id);
-    }
 
 }

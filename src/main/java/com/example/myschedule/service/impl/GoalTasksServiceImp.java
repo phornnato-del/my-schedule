@@ -8,6 +8,7 @@ import com.example.myschedule.dto.response.GoalTasksResDto;
 import com.example.myschedule.dto.response.GoalsResDto;
 import com.example.myschedule.entity.GoalTasksEntity;
 import com.example.myschedule.entity.GoalsEntity;
+import com.example.myschedule.enums.StatusEnum;
 import com.example.myschedule.mapper.GaolTasksMapper;
 import com.example.myschedule.service.GoalTasksService;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class GoalTasksServiceImp implements GoalTasksService {
         goalTasksDao.saveEntity(goals);
 
         return BaseWebResponse.<GoalTasksResDto>builder()
-                .status(200)
+                .status(StatusEnum.SUCCESS.getCode())
                 .message("Goal tasks created successfully !")
                 .build();
     }
@@ -44,7 +45,7 @@ public class GoalTasksServiceImp implements GoalTasksService {
         List<GoalTasksResDto> data = goallTaskMapper.getAlls(entity);
 
         return BaseWebResponse.<List<GoalTasksResDto>>builder()
-                .status(200)
+                .status(StatusEnum.SUCCESS.getCode())
                 .message("Retrieved Goal tasks successfully !")
                 .data(data)
                 .build();
@@ -59,7 +60,7 @@ public class GoalTasksServiceImp implements GoalTasksService {
         GoalTasksResDto data = goallTaskMapper.getById(entity);
 
         return BaseWebResponse.<GoalTasksResDto>builder()
-                .status(200)
+                .status(StatusEnum.SUCCESS.getCode())
                 .message("Retrieved Goal Tasks successfully !")
                 .data(data)
                 .build();
@@ -71,7 +72,7 @@ public class GoalTasksServiceImp implements GoalTasksService {
         goalTasksDao.saveEntity(goals);
 
         return BaseWebResponse.<GoalTasksResDto>builder()
-                .status(200)
+                .status(StatusEnum.SUCCESS.getCode())
                 .message("Goal tasks updated successfully !")
                 .build();
     }
@@ -84,7 +85,7 @@ public class GoalTasksServiceImp implements GoalTasksService {
         goalTasksDao.deleteById(id);
 
         return BaseWebResponse.<Void>builder()
-                .status(200)
+                .status(StatusEnum.SUCCESS.getCode())
                 .message("Goal tasks deleted successfully !")
                 .build();
 

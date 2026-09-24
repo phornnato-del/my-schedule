@@ -1,12 +1,13 @@
 package com.example.myschedule.service.impl;
 
-import com.example.myschedule.dao.GoalsDao;
-import com.example.myschedule.dto.request.GoalsReqDto;
+import com.example.myschedule.dao.ProjectDao;
+import com.example.myschedule.dto.request.ProjectsReqDto;
 import com.example.myschedule.dto.response.BaseWebResponse;
-import com.example.myschedule.dto.response.GoalsResDto;
-import com.example.myschedule.entity.GoalsEntity;
-import com.example.myschedule.mapper.GaolsMapper;
-import com.example.myschedule.service.GoalService;
+import com.example.myschedule.dto.response.ProjectsResDto;
+import com.example.myschedule.entity.ProjectsEntity;
+import com.example.myschedule.enums.StatusEnum;
+import com.example.myschedule.mapper.ProjectMapper;
+import com.example.myschedule.service.ProjectsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,102 +15,100 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class GoalServiceImp implements GoalService {
+public class ProjectsServiceImp implements ProjectsService {
 
-    private final GoalsDao goalsDao;
-    private final GaolsMapper gaolsMapper;
+    private final ProjectDao projectDao;
+    private final ProjectMapper projectMapper;
 
     @Override
-    public BaseWebResponse<GoalsResDto> insert(GoalsReqDto request) throws IOException {
+    public BaseWebResponse<ProjectsResDto> insert(ProjectsReqDto request) throws IOException {
 
-        GoalsEntity goals = mapToEntity(request, null);
-        goalsDao.saveEntity(goals);
+        ProjectsEntity goals = mapToEntity(request, null);
+        projectDao.saveEntity(goals);
 
-        return BaseWebResponse.<GoalsResDto>builder()
-                .status(200)
-                .message("Goal created successfully !")
+        return BaseWebResponse.<ProjectsResDto>builder()
+                .status(StatusEnum.SUCCESS.getCode())
+                .message("Projects created successfully !")
                 .build();
     }
 
     @Override
-    public BaseWebResponse<List<GoalsResDto>> getAllGoals() throws IOException {
+    public BaseWebResponse<List<ProjectsResDto>> getAllProjects() throws IOException {
 
-        List<GoalsEntity> entity = goalsDao.findAll();
-        List<GoalsResDto> data = gaolsMapper.toDto(entity);
+        List<ProjectsEntity> entity = projectDao.findAll();
+        List<ProjectsResDto> data = projectMapper.toDto(entity);
 
-        return BaseWebResponse.<List<GoalsResDto>>builder()
-                .status(200)
-                .message("Retrieved Goal successfully !")
+        return BaseWebResponse.<List<ProjectsResDto>>builder()
+                .status(StatusEnum.SUCCESS.getCode())
+                .message("Retrieved Projects successfully !")
                 .data(data)
                 .build();
     }
 
     @Override
-    public BaseWebResponse<GoalsResDto> getAllGoalsById(Long id) throws IOException {
+    public BaseWebResponse<ProjectsResDto> getAllProjectById(Long id) throws IOException {
 
-        GoalsEntity entity = goalsDao.findById(id)
-                .orElseThrow(() -> new RuntimeException(" Goal not found with id: " + id));
+        ProjectsEntity entity = projectDao.findById(id)
+                .orElseThrow(() -> new RuntimeException(" Projects not found with id: " + id));
 
-        GoalsResDto data = gaolsMapper.getByIntoDto(entity);
+        ProjectsResDto data = projectMapper.getByIntoDto(entity);
 
-        return BaseWebResponse.<GoalsResDto>builder()
-                .status(200)
-                .message("Retrieved Goal successfully !")
+        return BaseWebResponse.<ProjectsResDto>builder()
+                .status(StatusEnum.SUCCESS.getCode())
+                .message("Retrieved Projects successfully !")
                 .data(data)
                 .build();
     }
 
     @Override
-    public BaseWebResponse<GoalsResDto> update(Long id, GoalsReqDto request) throws IOException {
-        GoalsEntity goals = mapToEntity(request, id);
-        goalsDao.saveEntity(goals);
+    public BaseWebResponse<ProjectsResDto> update(Long id, ProjectsReqDto request) throws IOException {
+        ProjectsEntity goals = mapToEntity(request, id);
+        projectDao.saveEntity(goals);
 
-        return BaseWebResponse.<GoalsResDto>builder()
-                .status(200)
-                .message("Goal updated successfully !")
+        return BaseWebResponse.<ProjectsResDto>builder()
+                .status(StatusEnum.SUCCESS.getCode())
+                .message("Projects updated successfully !")
                 .build();
     }
 
     @Override
     public BaseWebResponse<Void> delete(Long id) throws IOException {
-        GoalsEntity entity = goalsDao.findById(id)
-                .orElseThrow(() -> new RuntimeException(" Goal not found with id: " + id));
+        ProjectsEntity entity = projectDao.findById(id)
+                .orElseThrow(() -> new RuntimeException(" Projects not found with id: " + id));
 
-        goalsDao.deleteById(id);
+        projectDao.deleteById(id);
 
         return BaseWebResponse.<Void>builder()
-                .status(200)
-                .message("Goal deleted successfully !")
+                .status(StatusEnum.SUCCESS.getCode())
+                .message("Projects deleted successfully !")
                 .build();
 
     }
 
-    private GoalsEntity mapToEntity(GoalsReqDto request, Long id){
-        GoalsEntity goals = Objects.nonNull(id)
-                ? goalsDao.findById(id)
-                .orElseThrow(() -> new RuntimeException("Goal not found with id: " + id))
-                : new GoalsEntity();
+    private ProjectsEntity mapToEntity(ProjectsReqDto request, Long id){
+        ProjectsEntity projects = Objects.nonNull(id)
+                ? projectDao.findById(id)
+                .orElseThrow(() -> new RuntimeException("Projects not found with id: " + id))
+                : new ProjectsEntity();
 
-        goals.setUserId(request.getUserId());
-        goals.setTitle(request.getTitle());
-        goals.setDescription(request.getDescription());
-        goals.setCategoryId(request.getCategoryId());
-        goals.setStartDate(request.getStartDate());
-        goals.setTargetDate(request.getTargetDate());
-        goals.setPriorityId(request.getPriorityId());
-        goals.setStatusId(request.getStatusId());
-        goals.setProgress(request.getProgress());
+        projects.setUserId(request.getUserId());
+        projects.setName(request.getName());
+        projects.setDescription(request.getDescription());
+        projects.setTechnology(request.getTechnology());
+        projects.setStatus(request.getStatus());
+        projects.setStartDate(LocalDate.now());
+        projects.setEndDate(LocalDate.now());
+        projects.setProgress(request.getProgress());
 
         if(Objects.isNull(id)){
-            goals.setCreatedAt(LocalDate.now());
+            projects.setCreatedAt(LocalDate.now());
         }else {
-            goals.setUpdatedAt(LocalDate.now());
+            projects.setUpdatedAt(LocalDate.now());
         }
 
-        return goals;
+        return projects;
     }
 }

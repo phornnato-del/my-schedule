@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-//@Component
 public interface GoalService {
     BaseWebResponse<GoalsResDto> insert(GoalsReqDto request) throws IOException;
     BaseWebResponse<List<GoalsResDto>> getAllGoals() throws IOException;

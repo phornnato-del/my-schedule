@@ -8,6 +8,7 @@ import com.example.myschedule.dto.response.GoalTasksResDto;
 import com.example.myschedule.dto.response.KnowledgeNotesResDto;
 import com.example.myschedule.entity.GoalTasksEntity;
 import com.example.myschedule.entity.KnowledgeNotesEntity;
+import com.example.myschedule.enums.StatusEnum;
 import com.example.myschedule.mapper.KnowledgeNotesMapper;
 import com.example.myschedule.service.knowledgeNoteService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class KnowledgeNotesServiceImp implements knowledgeNoteService {
     private final KnowledgeNotesDao knowledgeNotesDao;
     private final KnowledgeNotesMapper knowledgeNotesMapper;
 
+
     @Override
     public BaseWebResponse<KnowledgeNotesResDto> insert(KnowledgeNotesReqDto request) throws IOException {
 
@@ -32,7 +34,7 @@ public class KnowledgeNotesServiceImp implements knowledgeNoteService {
         knowledgeNotesDao.saveEntity(goals);
 
         return BaseWebResponse.<KnowledgeNotesResDto>builder()
-                .status(200)
+                .status(StatusEnum.SUCCESS.getCode())
                 .message("Knowledge notes created successfully !")
                 .build();
     }
@@ -44,7 +46,7 @@ public class KnowledgeNotesServiceImp implements knowledgeNoteService {
         List<KnowledgeNotesResDto> data = knowledgeNotesMapper.getAlls(entity);
 
         return BaseWebResponse.<List<KnowledgeNotesResDto>>builder()
-                .status(200)
+                .status(StatusEnum.SUCCESS.getCode())
                 .message("Retrieved Knowledge notes successfully !")
                 .data(data)
                 .build();
@@ -59,7 +61,7 @@ public class KnowledgeNotesServiceImp implements knowledgeNoteService {
         KnowledgeNotesResDto data = knowledgeNotesMapper.getById(entity);
 
         return BaseWebResponse.<KnowledgeNotesResDto>builder()
-                .status(200)
+                .status(StatusEnum.SUCCESS.getCode())
                 .message("Retrieved Knowledge notes successfully !")
                 .data(data)
                 .build();
@@ -71,7 +73,7 @@ public class KnowledgeNotesServiceImp implements knowledgeNoteService {
         knowledgeNotesDao.saveEntity(goals);
 
         return BaseWebResponse.<KnowledgeNotesResDto>builder()
-                .status(200)
+                .status(StatusEnum.SUCCESS.getCode())
                 .message("Knowledge note updated successfully !")
                 .build();
     }
@@ -84,7 +86,7 @@ public class KnowledgeNotesServiceImp implements knowledgeNoteService {
         knowledgeNotesDao.deleteById(id);
 
         return BaseWebResponse.<Void>builder()
-                .status(200)
+                .status(StatusEnum.SUCCESS.getCode())
                 .message(" Knowledge notes deleted successfully !")
                 .build();
 

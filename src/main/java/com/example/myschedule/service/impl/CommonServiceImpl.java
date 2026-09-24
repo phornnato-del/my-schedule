@@ -10,6 +10,7 @@ import com.example.myschedule.dto.response.StatusResDto;
 import com.example.myschedule.entity.CategoryEntity;
 import com.example.myschedule.entity.PriorityEntity;
 import com.example.myschedule.entity.StatusEntity;
+import com.example.myschedule.enums.StatusEnum;
 import com.example.myschedule.exception.ApiException;
 import com.example.myschedule.mapper.CategoryMapper;
 import com.example.myschedule.mapper.ErrorMapper;
@@ -45,7 +46,7 @@ public class CommonServiceImpl implements CommonService {
             List<StatusResDto> data = statusMapper.status(entity);
 
             return BaseWebResponse.<List<StatusResDto>>builder()
-                    .status(200)
+                    .status(StatusEnum.SUCCESS.getCode())
                     .message("Status retrieved successfully !")
                     .data(data)
                     .build();
@@ -63,7 +64,7 @@ public class CommonServiceImpl implements CommonService {
             List<PriorityResDto> data = priorityMapper.priority(entity);
 
             return BaseWebResponse.<List<PriorityResDto>>builder()
-                    .status(200)
+                    .status(StatusEnum.SUCCESS.getCode())
                     .message("Priority retrieved successfully !")
                     .data(data)
                     .build();
@@ -84,7 +85,7 @@ public class CommonServiceImpl implements CommonService {
             List<CategoryResDto> data = categoryMapper.category(entity);
 
             return BaseWebResponse.<List<CategoryResDto>>builder()
-                    .status(200)
+                    .status(StatusEnum.SUCCESS.getCode())
                     .message("Category retrieved successfully !")
                     .data(data)
                     .build();

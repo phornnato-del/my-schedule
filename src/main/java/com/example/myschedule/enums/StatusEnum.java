@@ -1,5 +1,9 @@
-package com.example.myschedule.enum
+package com.example.myschedule.enums;
 
+
+import lombok.Getter;
+
+@Getter
 public enum StatusEnum {
 
     SUCCESS(200, "Success"),
@@ -14,14 +18,6 @@ public enum StatusEnum {
     StatusEnum(int code, String message) {
         this.code = code;
         this.message = message;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
     }
 
 

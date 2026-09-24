@@ -6,6 +6,7 @@ import com.example.myschedule.dto.request.LoginReqDto;
 import com.example.myschedule.dto.request.UserRequestDto;
 import com.example.myschedule.dto.response.user.UserResponseDto;
 import com.example.myschedule.entity.UserEntity;
+import com.example.myschedule.enums.StatusEnum;
 import com.example.myschedule.exception.ApiException;
 import com.example.myschedule.mapper.ErrorMapper;
 import com.example.myschedule.mapper.User.UserMapper;
@@ -34,7 +35,6 @@ public class UserServiceImpl implements IUserService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
-
     @Override
     public BaseWebResponse<UserResponseDto> Register(UserRequestDto request, MultipartFile file) {
 
@@ -53,7 +53,7 @@ public class UserServiceImpl implements IUserService {
         UserResponseDto data = userMapper.toDto(user);
 
         return BaseWebResponse.<UserResponseDto>builder()
-                .status(200)
+                .status(StatusEnum.SUCCESS.getCode())
                 .message("User register successfully")
                 .data(data)
                 .build();
@@ -71,7 +71,7 @@ public class UserServiceImpl implements IUserService {
         List<UserResponseDto> data = userMapper.toDto(users);
 
         return BaseWebResponse.<List<UserResponseDto>>builder()
-                .status(200)
+                .status(StatusEnum.SUCCESS.getCode())
                 .message("Users retrieved successfully !")
                 .data(data)
                 .build();
@@ -89,7 +89,7 @@ public class UserServiceImpl implements IUserService {
         UserResponseDto data = userMapper.toDto(user);
 
         return BaseWebResponse.<UserResponseDto>builder()
-                .status(200)
+                .status(StatusEnum.SUCCESS.getCode())
                 .message("User retrieved successfully!")
                 .data(data)
                 .build();
@@ -103,7 +103,7 @@ public class UserServiceImpl implements IUserService {
         UserResponseDto data = userMapper.toDto(user);
 
         return BaseWebResponse.<UserResponseDto>builder()
-                .status(200)
+                .status(StatusEnum.SUCCESS.getCode())
                 .message("User updated successfully!")
                 .data(data)
                 .build();
@@ -122,7 +122,7 @@ public class UserServiceImpl implements IUserService {
             userDao.deleteById(id);
 
             return BaseWebResponse.<Void>builder()
-                    .status(200)
+                    .status(StatusEnum.SUCCESS.getCode())
                     .message("User deleted successfully!")
                     .build();
 

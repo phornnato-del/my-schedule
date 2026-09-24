@@ -5,6 +5,7 @@ import com.example.myschedule.dto.request.GoalsReqDto;
 import com.example.myschedule.dto.response.BaseWebResponse;
 import com.example.myschedule.dto.response.GoalsResDto;
 import com.example.myschedule.entity.GoalsEntity;
+import com.example.myschedule.enums.StatusEnum;
 import com.example.myschedule.mapper.GaolsMapper;
 import com.example.myschedule.service.GoalService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class GoalServiceImp implements GoalService {
     private final GoalsDao goalsDao;
     private final GaolsMapper gaolsMapper;
 
+
     @Override
     public BaseWebResponse<GoalsResDto> insert(GoalsReqDto request) throws IOException {
 
@@ -30,7 +32,7 @@ public class GoalServiceImp implements GoalService {
         goalsDao.saveEntity(goals);
 
         return BaseWebResponse.<GoalsResDto>builder()
-                .status(200)
+               .status(StatusEnum.SUCCESS.getCode())
                 .message("Goal created successfully !")
                 .build();
     }
@@ -42,7 +44,7 @@ public class GoalServiceImp implements GoalService {
         List<GoalsResDto> data = gaolsMapper.toDto(entity);
 
         return BaseWebResponse.<List<GoalsResDto>>builder()
-                .status(200)
+               .status(StatusEnum.SUCCESS.getCode())
                 .message("Retrieved Goal successfully !")
                 .data(data)
                 .build();
@@ -57,7 +59,7 @@ public class GoalServiceImp implements GoalService {
         GoalsResDto data = gaolsMapper.getByIntoDto(entity);
 
         return BaseWebResponse.<GoalsResDto>builder()
-                .status(200)
+               .status(StatusEnum.SUCCESS.getCode())
                 .message("Retrieved Goal successfully !")
                 .data(data)
                 .build();
@@ -69,7 +71,7 @@ public class GoalServiceImp implements GoalService {
         goalsDao.saveEntity(goals);
 
         return BaseWebResponse.<GoalsResDto>builder()
-                .status(200)
+               .status(StatusEnum.SUCCESS.getCode())
                 .message("Goal updated successfully !")
                 .build();
     }
@@ -82,7 +84,7 @@ public class GoalServiceImp implements GoalService {
         goalsDao.deleteById(id);
 
         return BaseWebResponse.<Void>builder()
-                .status(200)
+               .status(StatusEnum.SUCCESS.getCode())
                 .message("Goal deleted successfully !")
                 .build();
 

@@ -1,12 +1,11 @@
 package com.example.myschedule.repository;
 
 import com.example.myschedule.entity.GoalsEntity;
+import com.example.myschedule.entity.ProjectsEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface GoalsRepository extends JpaRepository<GoalsEntity,Long> {
+public interface ProjectsRepository extends JpaRepository<ProjectsEntity,Long> {
     void deleteById(Long id);
 }
