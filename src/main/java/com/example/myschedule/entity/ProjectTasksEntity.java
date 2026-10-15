@@ -42,4 +42,8 @@ public class ProjectTasksEntity {
 
     @Column(name = "CREATED_AT")
     private LocalDate createdAt;
+
+    @Column(name = "UPDATED_AT")
+    private LocalDate updatedAt;
+
 }

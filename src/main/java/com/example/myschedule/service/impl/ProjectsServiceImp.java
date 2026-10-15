@@ -6,6 +6,8 @@ import com.example.myschedule.dto.response.BaseWebResponse;
 import com.example.myschedule.dto.response.ProjectsResDto;
 import com.example.myschedule.entity.ProjectsEntity;
 import com.example.myschedule.enums.StatusEnum;
+import com.example.myschedule.exception.ApiException;
+import com.example.myschedule.exception.ResourceNotFoundException;
 import com.example.myschedule.mapper.ProjectMapper;
 import com.example.myschedule.service.ProjectsService;
 import lombok.RequiredArgsConstructor;
@@ -26,89 +28,127 @@ public class ProjectsServiceImp implements ProjectsService {
     @Override
     public BaseWebResponse<ProjectsResDto> insert(ProjectsReqDto request) throws IOException {
 
-        ProjectsEntity goals = mapToEntity(request, null);
-        projectDao.saveEntity(goals);
+       try{
+           ProjectsEntity goals = mapToEntity(request, null);
+           projectDao.saveEntity(goals);
 
-        return BaseWebResponse.<ProjectsResDto>builder()
-                .status(StatusEnum.SUCCESS.getCode())
-                .message("Projects created successfully !")
-                .build();
+           return BaseWebResponse.<ProjectsResDto>builder()
+                   .status(StatusEnum.SUCCESS.getCode())
+                   .message("Projects created successfully !")
+                   .build();
+       }catch (ApiException e){
+           throw e;
+       }catch(Exception e){
+           throw new ApiException(StatusEnum.INTERNAL_SERVER_ERROR.getCode(), e.getMessage());
+       }
     }
 
     @Override
     public BaseWebResponse<List<ProjectsResDto>> getAllProjects() throws IOException {
 
-        List<ProjectsEntity> entity = projectDao.findAll();
-        List<ProjectsResDto> data = projectMapper.toDto(entity);
+        try{
+            List<ProjectsEntity> entity = projectDao.findAll();
+            List<ProjectsResDto> data = projectMapper.toDto(entity);
 
-        return BaseWebResponse.<List<ProjectsResDto>>builder()
-                .status(StatusEnum.SUCCESS.getCode())
-                .message("Retrieved Projects successfully !")
-                .data(data)
-                .build();
+            return BaseWebResponse.<List<ProjectsResDto>>builder()
+                    .status(StatusEnum.SUCCESS.getCode())
+                    .message("Retrieved Projects successfully !")
+                    .data(data)
+                    .build();
+        }catch (ApiException e){
+            throw e;
+        }catch(Exception e){
+            throw new ApiException(StatusEnum.INTERNAL_SERVER_ERROR.getCode(), e.getMessage());
+        }
     }
 
     @Override
     public BaseWebResponse<ProjectsResDto> getAllProjectById(Long id) throws IOException {
 
-        ProjectsEntity entity = projectDao.findById(id)
-                .orElseThrow(() -> new RuntimeException(" Projects not found with id: " + id));
+        try {
+            ProjectsEntity entity = projectDao.findById(id)
+                    .orElseThrow(() -> new ApiException(StatusEnum.NOT_FOUND.getCode(), "Project not found " + id));
 
-        ProjectsResDto data = projectMapper.getByIntoDto(entity);
+            ProjectsResDto data = projectMapper.getByIntoDto(entity);
 
-        return BaseWebResponse.<ProjectsResDto>builder()
-                .status(StatusEnum.SUCCESS.getCode())
-                .message("Retrieved Projects successfully !")
-                .data(data)
-                .build();
+            return BaseWebResponse.<ProjectsResDto>builder()
+                    .status(StatusEnum.SUCCESS.getCode())
+                    .message("Retrieved Projects successfully !")
+                    .data(data)
+                    .build();
+        }catch (ApiException e){
+            throw e;
+        }
+        catch (Exception e){
+            throw new ApiException(StatusEnum.INTERNAL_SERVER_ERROR.getCode(), e.getMessage());
+        }
     }
 
     @Override
     public BaseWebResponse<ProjectsResDto> update(Long id, ProjectsReqDto request) throws IOException {
-        ProjectsEntity goals = mapToEntity(request, id);
-        projectDao.saveEntity(goals);
+        try{
+            ProjectsEntity goals = mapToEntity(request, id);
+            projectDao.saveEntity(goals);
 
-        return BaseWebResponse.<ProjectsResDto>builder()
-                .status(StatusEnum.SUCCESS.getCode())
-                .message("Projects updated successfully !")
-                .build();
-    }
+            return BaseWebResponse.<ProjectsResDto>builder()
+                    .status(StatusEnum.SUCCESS.getCode())
+                    .message("Projects updated successfully !")
+                    .build();
+
+        }catch (ApiException e){
+            throw e;
+        }catch (Exception e){
+                throw new ApiException(StatusEnum.INTERNAL_SERVER_ERROR.getCode(), e.getMessage());
+            }
+        }
 
     @Override
     public BaseWebResponse<Void> delete(Long id) throws IOException {
-        ProjectsEntity entity = projectDao.findById(id)
-                .orElseThrow(() -> new RuntimeException(" Projects not found with id: " + id));
+        try {
+            ProjectsEntity entity = projectDao.findById(id)
+                    .orElseThrow(() ->  new ApiException(StatusEnum.NOT_FOUND.getCode(), "Project not found " + id));
 
-        projectDao.deleteById(id);
+            projectDao.deleteById(id);
 
-        return BaseWebResponse.<Void>builder()
-                .status(StatusEnum.SUCCESS.getCode())
-                .message("Projects deleted successfully !")
-                .build();
+            return BaseWebResponse.<Void>builder()
+                    .status(StatusEnum.SUCCESS.getCode())
+                    .message("Projects deleted successfully !")
+                    .build();
+        }catch (ApiException e){
+            throw e;
+        }catch (Exception e){
+            throw new ApiException(StatusEnum.INTERNAL_SERVER_ERROR.getCode(), e.getMessage());
+        }
 
     }
 
     private ProjectsEntity mapToEntity(ProjectsReqDto request, Long id){
-        ProjectsEntity projects = Objects.nonNull(id)
-                ? projectDao.findById(id)
-                .orElseThrow(() -> new RuntimeException("Projects not found with id: " + id))
-                : new ProjectsEntity();
+        try{
+            ProjectsEntity projects = Objects.nonNull(id)
+                    ? projectDao.findById(id)
+                    .orElseThrow(() ->  new ApiException(StatusEnum.NOT_FOUND.getCode(), "Project not found " + id))
+                    : new ProjectsEntity();
 
-        projects.setUserId(request.getUserId());
-        projects.setName(request.getName());
-        projects.setDescription(request.getDescription());
-        projects.setTechnology(request.getTechnology());
-        projects.setStatus(request.getStatus());
-        projects.setStartDate(LocalDate.now());
-        projects.setEndDate(LocalDate.now());
-        projects.setProgress(request.getProgress());
+            projects.setUserId(request.getUserId());
+            projects.setName(request.getName());
+            projects.setDescription(request.getDescription());
+            projects.setTechnology(request.getTechnology());
+            projects.setStatus(request.getStatus());
+            projects.setStartDate(LocalDate.now());
+            projects.setEndDate(LocalDate.now());
+            projects.setProgress(request.getProgress());
 
-        if(Objects.isNull(id)){
-            projects.setCreatedAt(LocalDate.now());
-        }else {
-            projects.setUpdatedAt(LocalDate.now());
+            if(Objects.isNull(id)){
+                projects.setCreatedAt(LocalDate.now());
+            }else {
+                projects.setUpdatedAt(LocalDate.now());
+            }
+
+            return projects;
+        }catch (ApiException e){
+            throw e;
+        }catch (Exception e){
+            throw new ApiException(StatusEnum.INTERNAL_SERVER_ERROR.getCode(), e.getMessage());
         }
-
-        return projects;
     }
 }
