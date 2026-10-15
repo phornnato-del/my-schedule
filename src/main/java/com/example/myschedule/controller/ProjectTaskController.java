@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/project-task")
 @RequiredArgsConstructor
-//@Encrypted
+@Encrypted
 public class ProjectTaskController {
 
     private final ProjectsTaskService projectsTaskService;
